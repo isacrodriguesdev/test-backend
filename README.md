@@ -186,7 +186,6 @@ Authorization: Bearer <token>
 
 - Validação de query params: `FetchTransactionQueryParams` exige `startDate` e `endDate` no formato `YYYY-MM-DD`. `chartType` só aceita `pie`, `line` e `map`.
 - Data boundaries/timezone: as datas são convertidas com `new Date('YYYY-MM-DD')`. Para evitar perda/ganho de um dia por timezone, considere normalizar `startDate` ao início do dia e `endDate` ao fim do dia com uma timezone consistente (UTC ou local).
-- Escopo por usuário: atualmente o repositório busca transações por data; se a API for multi-usuário, recomendo filtrar por `userId` no repositório para retornar apenas as transações do usuário autenticado.
 
 ## Swagger / OpenAPI
 
