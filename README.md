@@ -234,7 +234,7 @@ Para rodar os testes de integração (end-to-end) use o comando abaixo:
 pnpm test:e2e
 ```
 
-## Projetos relacionados
+## Outros projetos
 
 - quantum-cripto-service — https://github.com/isacrodriguesdev/quantum-cripto-service
 
