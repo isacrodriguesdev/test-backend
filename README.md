@@ -236,5 +236,6 @@ pnpm test:e2e
 
 ## Outros projetos
 
-- quantum-cripto-service — https://github.com/isacrodriguesdev/quantum-cripto-service
+- Quantum Cripto Service — https://github.com/isacrodriguesdev/quantum-cripto-service
+- Saturno Crypto API — https://github.com/isacrodriguesdev/saturno-crypto-api
 
