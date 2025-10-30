@@ -86,8 +86,8 @@ Todas as rotas seguem o prefixo base `/api`.
 ```
 
 - Erros possíveis:
-  - 400/422: validação do payload (se tiver ValidationPipe aplicado no controller)
-  - 409 / 200 com { error: 'User already exists' }: usuário já existe (implementação atual)
+  - 400/422: validação do payload
+  - 401 Unauthorized: usuario já existe
 
 
 ### 2) Login
