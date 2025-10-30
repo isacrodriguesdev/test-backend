@@ -19,12 +19,12 @@ export class PrismaTransactionRepository implements TransactionRepository {
 
   async FindByDate(startDate: Date, endDate: Date = new Date()): Promise<Transaction[]> {
     const results = await this.prisma.transaction.findMany({
-      // where: {
-      //   date: {
-      //     gte: startDate,
-      //     lte: endDate,
-      //   },
-      // },
+      where: {
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
       orderBy: {
         date: "asc",
       },

@@ -31,7 +31,7 @@ export class Transaction extends BaseEntity {
   }
 
   get type(): string {
-    return this._type.getValue();
+    return this._type.getValue().toUpperCase();
   }
 
   get category(): string {
@@ -54,7 +54,7 @@ export class Transaction extends BaseEntity {
     return {
       id: this.id,
       userId: this._userId,
-      type: this._type.getValue(),
+      type: this.type,
       category: this._category,
       amount: this._amount,
       date: this._date,
