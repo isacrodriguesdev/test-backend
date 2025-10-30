@@ -225,3 +225,11 @@ curl -s -H "Authorization: Bearer <TOKEN>" "http://localhost:3000/api/transactio
 ```bash
 pnpm test
 ```
+
+### Testes E2E
+
+Para rodar os testes de integração (end-to-end) use o comando abaixo (ele usa a configuração em `test/jest-e2e.json`):
+
+```bash
+pnpm -s jest --config test/jest-e2e.json --runInBand
+```

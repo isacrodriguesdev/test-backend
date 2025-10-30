@@ -13,11 +13,6 @@ export class FetchTransaction {
   public async execute(filter: any): Promise<any> {
     const { chartType, startDate, endDate } = filter;
 
-    // garantir que startDate e endDate existem (DTO já valida formato) e converte-los para Date
-    if (!startDate || !endDate) {
-      throw createHttpException(HttpStatus.BAD_REQUEST, 'Start date and end date are required.');
-    }
-
     const start = new Date(startDate);
     const end = new Date(endDate);
 
