@@ -184,6 +184,30 @@ Authorization: Bearer <token>
   - 401 Unauthorized: token ausente/inválido
   - 500 Internal Server Error: falha no servidor
 
+### Exemplos reais (curl) — rota protegida com Authorization
+
+Use os exemplos abaixo para testar a rota real com token JWT. Substitua `localhost:3000` se sua aplicação estiver em outro host/porta.
+
+- Linha (chartType=line):
+
+```bash
+curl -s -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWEzNjNhLTFiZDMtNzNhNC04ODM2LTU0NTUyYTUyZWFiMSIsImVtYWlsIjoiaXNhY3JvZHJpZ3Vlc2RldkBwcm90b25tYWlsLmNvbSIsImlhdCI6MTc2MTg0NjM2OSwiZXhwIjoxNzY0NDM4MzY5fQ.R9AWWy1aqXmeZZQZZSgq41YrJzb-Ys7f5PU2UH6gnf0" \
+  "http://localhost:3000/api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31"
+```
+
+- Pizza (chartType=pie):
+
+```bash
+curl -s -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWEzNjNhLTFiZDMtNzNhNC04ODM2LTU0NTUyYTUyZWFiMSIsImVtYWlsIjoiaXNhY3JvZHJpZ3Vlc2RldkBwcm90b25tYWlsLmNvbSIsImlhdCI6MTc2MTg0NjM2OSwiZXhwIjoxNzY0NDM4MzY5fQ.R9AWWy1aqXmeZZQZZSgq41YrJzb-Ys7f5PU2UH6gnf0" \
+  "http://localhost:3000/api/transaction?chartType=pie&startDate=2025-01-01&endDate=2025-12-31"
+```
+
+Observação: os comandos acima retornam JSON. Use ferramentas como `jq` para formatar a saída:
+
+```bash
+curl -s -H "Authorization: Bearer <TOKEN>" "http://localhost:3000/api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31" | jq
+```
+
 
 ## Observações importantes
 

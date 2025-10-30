@@ -8,7 +8,7 @@ export class LoginUserBody {
   @IsEmail()
   email: string;
 
-  @ApiProperty({ description: 'User password', example: 'test123' })
+  @ApiProperty({ description: 'User password', example: '$trongPassword123' })
   @IsNotEmpty()
   password: string;
 }
