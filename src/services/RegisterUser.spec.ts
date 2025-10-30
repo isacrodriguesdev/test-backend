@@ -1,3 +1,4 @@
+import { HttpException } from '@nestjs/common';
 import { RegisterUser } from './RegisterUser';
 
 describe('RegisterUser', () => {
@@ -6,9 +7,11 @@ describe('RegisterUser', () => {
     const mockRepo: any = { findByEmail: jest.fn().mockResolvedValue(existingUser) };
     const service = new RegisterUser(mockRepo, {} as any, {} as any);
 
-    const result = await service.execute({ email: 'a@b.com', password: 'p', toJson: () => ({}) } as any);
-    expect(result).toHaveProperty('error');
+    await expect(
+      service.execute({ email: 'a@b.com', password: 'p', toJson: () => ({}) } as any)
+    ).rejects.toThrow(HttpException);
   });
+
 
   it('should create user and return token on success', async () => {
     const mockRepo: any = { findByEmail: jest.fn().mockResolvedValue(null), create: jest.fn().mockResolvedValue(undefined) };
@@ -16,7 +19,7 @@ describe('RegisterUser', () => {
     const mockAuth: any = { sign: jest.fn().mockResolvedValue('token') };
     const service = new RegisterUser(mockRepo, mockEncrypted, mockAuth);
 
-    const user: any = { id: 'u2', email: 'b@b.com', password: 'p', setPassword: function(p: any) { this.password = p }, toJson: () => ({ id: 'u2' }) };
+    const user: any = { id: 'u2', email: 'b@b.com', password: 'p', setPassword: function (p: any) { this.password = p }, toJson: () => ({ id: 'u2' }) };
 
     const result = await service.execute(user);
     expect(result).toHaveProperty('token', 'token');
