@@ -30,7 +30,6 @@ export class TransactionController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Fetch transactions for dashboard with filters' })
   @ApiResponse({ status: 200, description: 'Returns data formatted according to chartType' })

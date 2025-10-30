@@ -4,7 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 export class FetchTransactionQueryParams {
-  @ApiPropertyOptional({ description: "Chart type: 'pie' | 'line' | 'map'", example: 'pie' })
+  @ApiPropertyOptional({ description: "Chart type: 'pie' | 'line' | 'map'", example: 'line' })
   @IsOptional()
   @IsIn(['pie', 'line', 'map'])
   chartType?: 'pie' | 'line' | 'map';
