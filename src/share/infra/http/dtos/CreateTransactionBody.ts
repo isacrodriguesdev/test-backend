@@ -4,7 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateTransactionBody {
   @ApiProperty({ description: "Transaction type: 'income' or 'expense'", example: 'income' })
   @IsNotEmpty()
-  @IsIn(['income', 'expense'])
+  // ignorar maiusculas/minusculas
+  @IsIn(['income', 'expense', 'INCOME', 'EXPENSE'])
   type: string;
 
   @ApiProperty({ description: 'Category of the transaction', example: 'groceries' })

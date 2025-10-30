@@ -15,27 +15,18 @@ export class FetchTransaction {
 
     // garantir que startDate e endDate existem (DTO já valida formato) e converte-los para Date
     if (!startDate || !endDate) {
-      throw new HttpException({
-        status: HttpStatus.BAD_REQUEST,
-        error: 'Start date and end date are required.',
-      }, HttpStatus.BAD_REQUEST);
+      throw createHttpException(HttpStatus.BAD_REQUEST, 'Start date and end date are required.');
     }
 
     const start = new Date(startDate);
     const end = new Date(endDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      throw new HttpException({
-        status: HttpStatus.BAD_REQUEST,
-        error: 'Invalid date format. Use YYYY-MM-DD.',
-      }, HttpStatus.BAD_REQUEST);
+      throw createHttpException(HttpStatus.BAD_REQUEST, 'Invalid date format. Use YYYY-MM-DD.');
     }
 
     if (start > end) {
-      throw new HttpException({
-        status: HttpStatus.BAD_REQUEST,
-        error: 'startDate must be before or equal to endDate.',
-      }, HttpStatus.BAD_REQUEST);
+      throw createHttpException(HttpStatus.BAD_REQUEST, 'startDate must be before or equal to endDate.');
     }
 
     const transactions = await this.transactionRepository.FindByDate(start, end);
@@ -44,4 +35,11 @@ export class FetchTransaction {
     const result = await strategy.execute(transactions);
     return result;
   }
+}
+
+function createHttpException(status: HttpStatus, message: string): HttpException {
+  return new HttpException({
+    status,
+    error: message,
+  }, status);
 }

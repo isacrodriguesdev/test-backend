@@ -10,12 +10,12 @@ export class TransactionType {
 
   private validateType(type: string) {
     const validTypes: Type[] = ['INCOME', 'EXPENSE'];
-    if (!validTypes.includes(type as Type)) {
+    if (!validTypes.includes(type.toUpperCase() as Type)) {
       throw new Error('Invalid transaction type. Must be INCOME or EXPENSE.');
     }
   }
 
   getValue(): Type {
-    return this._type;
+    return this._type.toUpperCase() as Type;
   }
 }
