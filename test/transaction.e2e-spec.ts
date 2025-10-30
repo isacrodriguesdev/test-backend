@@ -1,18 +1,61 @@
-// Mock the TransactionMapper to avoid loading unrelated modules
-jest.mock('src/share/infra/mappers/TransactionMapper', () => ({
-  TransactionMapper: { fromDTO: (dto: any) => ({ ...dto }) },
-}));
+import 'dotenv/config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import request from 'supertest';
+import { App } from 'supertest/types';
+import { AppModule } from './../src/app.module';
+import { JwtAuthGuard } from '../src/share/infra/auth/jwt-auth.guard';
 
-import { TransactionController } from '../src/controllers/transaction.controller';
+describe('Transaction (e2e)', () => {
+  let app: INestApplication<App>;
 
-describe('TransactionController (e2e minimal)', () => {
-  it('fetchByFilter should call FetchTransaction.execute and return formatted data', async () => {
-    const mockFetch: any = { execute: jest.fn().mockResolvedValue({ labels: [], datasets: [] }) };
-    const controller = new TransactionController({} as any, mockFetch);
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
-    const res = await controller.fetchByFilter({ chartType: 'line', startDate: '2025-01-01', endDate: '2025-12-31' } as any);
-    expect(res).toHaveProperty('labels');
-    expect(res).toHaveProperty('datasets');
-    expect(mockFetch.execute).toHaveBeenCalled();
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+
+  // map
+  it('GET /api/transaction with chartType=map', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/api/transaction?startDate=2025-01-01&endDate=2025-12-31')
+      .expect(200);
+
+    expect(Array.isArray(res.body)).toBe(true);
+    if (res.body.length > 0) {
+      expect(res.body[0]).toHaveProperty('id');
+      expect(res.body[0]).toHaveProperty('userId');
+      expect(res.body[0]).toHaveProperty('type');
+      expect(res.body[0]).toHaveProperty('category');
+      expect(res.body[0]).toHaveProperty('amount');
+      expect(res.body[0]).toHaveProperty('date');
+    }
+  });
+
+  it('GET /api/transaction with chartType=pie', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/api/transaction?chartType=pie&startDate=2025-01-01&endDate=2025-12-31')
+      .expect(200);
+
+    expect(Array.isArray(res.body)).toBe(true);
+    if (res.body.length > 0) {
+      expect(res.body[0]).toHaveProperty('label');
+      expect(res.body[0]).toHaveProperty('value');
+    }
+  });
+
+  it('GET /api/transaction with chartType=line', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31')
+      .expect(200);
+
+    expect(res.body).toHaveProperty('labels');
+    expect(res.body).toHaveProperty('datasets');
   });
 });

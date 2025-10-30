@@ -1,30 +1,54 @@
-// Mock the UserMapper so controller logic doesn't import heavy domain code
-jest.mock('src/share/infra/mappers/UserMapper', () => ({
-  UserMapper: { fromDTO: (dto: any) => ({ ...dto }) },
-}));
+import 'dotenv/config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import request from 'supertest';
+import { App } from 'supertest/types';
+import { AppModule } from './../src/app.module';
+import { JwtAuthGuard } from '../src/share/infra/auth/jwt-auth.guard';
 
-import { UserController } from '../src/controllers/user.controller';
+describe('User (e2e)', () => {
+  let app: INestApplication<App>;
 
-describe('UserController (e2e minimal)', () => {
-  it('register should call RegisterUser.execute and return token', async () => {
-    const mockRegister: any = { execute: jest.fn().mockResolvedValue({ user: { id: '1' }, token: 't' }) };
-    const mockLogin: any = { execute: jest.fn().mockResolvedValue({ user: { id: '1' }, token: 't' }) };
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
-    const controller = new UserController(mockRegister, mockLogin as any);
-
-    const result = await controller.register({ name: 'a', email: 'a@b.com', password: 'p' } as any);
-    expect(result).toHaveProperty('token');
-    expect(mockRegister.execute).toHaveBeenCalled();
+    app = moduleFixture.createNestApplication();
+    await app.init();
   });
 
-  it('login should call LoginUser.execute and return token', async () => {
-    const mockRegister: any = { execute: jest.fn() };
-    const mockLogin: any = { execute: jest.fn().mockResolvedValue({ user: { id: '1' }, token: 't' }) };
+  it('POST /api/user/register', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/api/user/register')
+      .send({
+        name: 'Example User',
+        email: 'example@example.com',
+        password: '$trongPassword123',
+      });
 
-    const controller = new UserController(mockRegister, mockLogin as any);
+    expect([201, 400]).toContain(res.status);
+  });
 
-    const result = await controller.login({ email: 'a@b.com', password: 'p' } as any);
-    expect(result).toHaveProperty('token');
-    expect(mockLogin.execute).toHaveBeenCalledWith('a@b.com', 'p');
+  it('GET /api/user/login', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/api/user/login')
+      .send({
+        email: 'example@example.com',
+        password: '$trongPassword123',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty('user');
+    // user properties
+    expect(res.body.user).toHaveProperty('id');
+    expect(res.body.user).toHaveProperty('name');
+    expect(res.body.user).toHaveProperty('email');
+    expect(res.body.user).not.toHaveProperty('password');
+    // token
+    expect(res.body).toHaveProperty('token');
   });
 });

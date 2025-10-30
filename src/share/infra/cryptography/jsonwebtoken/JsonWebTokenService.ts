@@ -6,8 +6,6 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY!;
 export class JsonWebTokenService implements Authenticator {
   public async validate(token: string): Promise<boolean> {
     try {
-      console.log('Validating token:', token);
-      console.log('Using secret key:', JWT_SECRET_KEY);
       const decoded = verify(token, JWT_SECRET_KEY);
       return Boolean(decoded);
     } catch (error: any) {
@@ -19,8 +17,6 @@ export class JsonWebTokenService implements Authenticator {
     const token = sign(payload, JWT_SECRET_KEY, {
       expiresIn: "30d",
     });
-    console.log('Generated JWT token:', token);
-    console.log('Using secret key:', JWT_SECRET_KEY);
     return token;
   }
 

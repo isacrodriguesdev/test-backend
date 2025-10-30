@@ -22,7 +22,6 @@ export class TransactionController {
   @ApiOperation({ summary: 'Create a new transaction' })
   @ApiResponse({ status: 200, description: 'Transaction created' })
   async create(@Body() transaction: CreateTransactionBody, @Auth() user: any) {
-    console.log(transaction)
     return this.createTransaction.execute(
       TransactionMapper.fromDTO({
         ...transaction,
