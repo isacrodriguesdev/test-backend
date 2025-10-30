@@ -2,7 +2,7 @@
 
 Este repositório contém uma API em NestJS que serve dados de transações para um dashboard. A API é dinâmica e retorna diferentes formatos conforme o tipo de gráfico solicitado (pie, line, map).
 
-![Example line chart of transactions](https://raw.githubusercontent.com/isacrodriguesdev/test-backend/master/example.png)
+![Example line chart of transactions]([https://raw.githubusercontent.com/isacrodriguesdev/test-backend/master/example.png](https://github.com/isacrodriguesdev/test-backend/blob/master/example.png?raw=true))
 
 
 ## Sumário
