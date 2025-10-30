@@ -228,8 +228,8 @@ pnpm test
 
 ### Testes E2E
 
-Para rodar os testes de integração (end-to-end) use o comando abaixo (ele usa a configuração em `test/jest-e2e.json`):
+Para rodar os testes de integração (end-to-end) use o comando abaixo:
 
 ```bash
-pnpm -s jest --config test/jest-e2e.json --runInBand
+pnpm test:e2e
 ```
