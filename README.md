@@ -166,7 +166,7 @@ Authorization: Bearer <token>
 - Exemplo:
 
 ```
-GET /api/transaction?chartType=pie&startDate=2023-01-01&endDate=2023-12-31
+GET /api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31
 Authorization: Bearer <token>
 ```
 
