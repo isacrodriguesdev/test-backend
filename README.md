@@ -157,7 +157,7 @@ Authorization: Bearer <token>
 ### 4) Buscar transações (para dashboard)
 - Método: GET
 - URL: `/api/transaction`
-- Auth: Sim (Bearer JWT)
+- Auth: Não
 - Query params (validados):
   - `chartType` (opcional): `pie` | `line` | `map` (padrão: `map`)
   - `startDate` (obrigatório): `YYYY-MM-DD`
@@ -167,7 +167,6 @@ Authorization: Bearer <token>
 
 ```
 GET /api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31
-Authorization: Bearer <token>
 ```
 
 - Comportamento e formatos de retorno:
@@ -181,31 +180,30 @@ Authorization: Bearer <token>
 - Códigos de status possíveis:
   - 200 OK: sucesso
   - 400 Bad Request: datas ausentes/invalidas ou `startDate > endDate`
-  - 401 Unauthorized: token ausente/inválido
   - 500 Internal Server Error: falha no servidor
 
-### Exemplos reais (curl) — rota protegida com Authorization
+### Exemplos reais (curl)
 
-Use os exemplos abaixo para testar a rota real com token JWT. Substitua `localhost:3000` se sua aplicação estiver em outro host/porta.
+Use os exemplos abaixo para testar a rota real. Substitua `localhost:3000` se sua aplicação estiver em outro host/porta.
 
 - Linha (chartType=line):
 
 ```bash
-curl -s -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWEzNjNhLTFiZDMtNzNhNC04ODM2LTU0NTUyYTUyZWFiMSIsImVtYWlsIjoiaXNhY3JvZHJpZ3Vlc2RldkBwcm90b25tYWlsLmNvbSIsImlhdCI6MTc2MTg0NjM2OSwiZXhwIjoxNzY0NDM4MzY5fQ.R9AWWy1aqXmeZZQZZSgq41YrJzb-Ys7f5PU2UH6gnf0" \
+curl -s \
   "http://localhost:3000/api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31"
 ```
 
 - Pizza (chartType=pie):
 
 ```bash
-curl -s -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxOWEzNjNhLTFiZDMtNzNhNC04ODM2LTU0NTUyYTUyZWFiMSIsImVtYWlsIjoiaXNhY3JvZHJpZ3Vlc2RldkBwcm90b25tYWlsLmNvbSIsImlhdCI6MTc2MTg0NjM2OSwiZXhwIjoxNzY0NDM4MzY5fQ.R9AWWy1aqXmeZZQZZSgq41YrJzb-Ys7f5PU2UH6gnf0" \
+curl -s \
   "http://localhost:3000/api/transaction?chartType=pie&startDate=2025-01-01&endDate=2025-12-31"
 ```
 
 Observação: os comandos acima retornam JSON. Use ferramentas como `jq` para formatar a saída:
 
 ```bash
-curl -s -H "Authorization: Bearer <TOKEN>" "http://localhost:3000/api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31" | jq
+curl -s "http://localhost:3000/api/transaction?chartType=line&startDate=2025-01-01&endDate=2025-12-31" | jq
 ```
 
 
